@@ -17,4 +17,5 @@ Image Classification using computer vision
 |-------|-------|-----------|----------------------|--------|
 | Resnet50 | 40 | Adam | 85.107 | [d57357b](https://github.com/harshraj22/DeepLearning/blob/d57357bb508039b80089c250b0002a2ffce1d106/submissions/HackerEarth:%20%5BHoliday%20Season%5D/Holiday_Season.ipynb) |
 | InceptionResnetV2 | 40 | Adam | 84.747 | [6d73b87](https://github.com/harshraj22/DeepLearning/blob/6d73b874ec1f7573e5c36150a4ecca2c226890d9/submissions/HackerEarth:%20%5BHoliday%20Season%5D/Holiday_Season.ipynb) |
-| [BagNet](https://github.com/wielandbrendel/bag-of-local-features-models) | 40 | Adam | 72.77 | [4f75d9c](https://github.com/harshraj22/DeepLearning/blob/main/submissions/HackerEarth:%20%5BHoliday%20Season%5D/Holiday_Season.ipynb) |
+| [BagNet](https://github.com/wielandbrendel/bag-of-local-features-models) | 40 | Adam | 72.77 | [4f75d9c](https://github.com/harshraj22/DeepLearning/blob/4f75d9cdce2ca63fe6eea590379336c037d83ef1/submissions/HackerEarth:%20%5BHoliday%20Season%5D/Holiday_Season.ipynb) |
+| DenseNet | 40 | Adam | 87.33 | [2becce6](https://github.com/harshraj22/DeepLearning/blob/2becce64c9311ff83f9bc249d7caed5f504c78d8/submissions/HackerEarth:%20%5BHoliday%20Season%5D/Holiday_Season.ipynb) |

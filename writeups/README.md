@@ -11,3 +11,6 @@
 | Seq to seq models | | | |
 
 #### Discussions : [pytorch forum](https://discuss.pytorch.org/), [stackoverflow](https://stackoverflow.com/)
+
+#### Other helpful topics explained:
+- Matrix calculations in forward propagation of neural network: [Analytics Vidhya](https://medium.com/analytics-vidhya/mathematics-and-vectorization-behind-neural-network-b6d491fa617d)

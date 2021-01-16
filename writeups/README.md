@@ -12,5 +12,7 @@
 
 #### Discussions : [pytorch forum](https://discuss.pytorch.org/), [stackoverflow](https://stackoverflow.com/)
 
+#### Good Hands on tutorials: [Ben Trevett's Colab Notebooks](https://github.com/bentrevett)
+
 #### Other helpful topics explained:
 - Matrix calculations in forward propagation of neural network: [Analytics Vidhya](https://medium.com/analytics-vidhya/mathematics-and-vectorization-behind-neural-network-b6d491fa617d)

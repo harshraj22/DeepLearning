@@ -7,7 +7,7 @@
 | Loss functions | | | |
 | Optimizers | | | |
 | Convolutional Neural Network | | |
-|Attention Mechanism | [CS480/680](https://youtu.be/OyFJWRnt_AY), [CS715](https://youtu.be/yInilk6x-OY) | | [Jalammar](http://jalammar.github.io/illustrated-transformer/) |
+|Attention Mechanism | [CS480/680](https://youtu.be/OyFJWRnt_AY), [CS7015](https://youtu.be/yInilk6x-OY) | | [Jalammar](http://jalammar.github.io/illustrated-transformer/) |
 | Seq to seq models | | | |
 
 #### Discussions : [pytorch forum](https://discuss.pytorch.org/), [stackoverflow](https://stackoverflow.com/)

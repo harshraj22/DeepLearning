@@ -10,6 +10,7 @@
 | Recurrent Neural Network | | |
 |Attention Mechanism | [CS7015](https://youtu.be/yInilk6x-OY), [CS480/680](https://youtu.be/OyFJWRnt_AY) | | [Tomek Korbak](https://tomekkorbak.com/2020/06/26/implementing-attention-in-pytorch/), [Jalammar](http://jalammar.github.io/illustrated-transformer/) |
 | Seq to seq models | | | |
+| Generative models | | | |
 
 #### Discussions : [pytorch forum](https://discuss.pytorch.org/), [stackoverflow](https://stackoverflow.com/)
 

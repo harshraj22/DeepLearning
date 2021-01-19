@@ -1,7 +1,7 @@
 ### Contest link [HackerEarth](https://www.hackerearth.com/challenges/competitive/hackerearth-deep-learning-challenge-holidays/machine-learning/holiday-season-11-2c924626/)
 
 ### Summary:
-&emsp; Classify images into one of 6 categories.
+&emsp; Classify images into one of 6 categories. 
 
 Image Classification using computer vision
 
@@ -21,6 +21,6 @@ Image Classification using computer vision
 | Resnet50 | 40 | Adam | 85.107 | [d57357b](https://github.com/harshraj22/DeepLearning/blob/d57357bb508039b80089c250b0002a2ffce1d106/submissions/HackerEarth:%20%5BHoliday%20Season%5D/Holiday_Season.ipynb) |
 | Resnet50 (last 2 layers trainable) | 40 | Adam | 85.913 | [94caf07](https://github.com/harshraj22/DeepLearning/blob/94caf0717370589cc27114361b6a2a5aea3f745e/submissions/HackerEarth:%20%5BHoliday%20Season%5D/Holiday_Season.ipynb) |
 | [senet154](https://github.com/osmr/imgclsmob) | 40 | Adam | 79.153 | [623a89a](https://github.com/harshraj22/DeepLearning/blob/623a89a6e79c7e3ebe14a5f4b0b4b688455f92a9/submissions/HackerEarth:%20%5BHoliday%20Season%5D/Holiday_Season.ipynb) |
-
+| Resnet50 + InceptionResnetV2 | - | - | Cuda Out Of Memory :cry: | [76fd386](https://github.com/harshraj22/DeepLearning/blob/76fd38641159c9a0b2c6928e64cd818a3eccb605/submissions/HackerEarth:%20%5BHoliday%20Season%5D/Holiday_Season.ipynb)
 
 

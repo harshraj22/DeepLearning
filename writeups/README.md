@@ -18,3 +18,4 @@
 
 #### Other helpful topics explained:
 - Matrix calculations in forward propagation of neural network: [Analytics Vidhya](https://medium.com/analytics-vidhya/mathematics-and-vectorization-behind-neural-network-b6d491fa617d)
+- [BatchNormalization](https://www.youtube.com/watch?v=DtEq44FTPM4)

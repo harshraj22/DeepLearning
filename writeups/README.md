@@ -11,7 +11,7 @@
 |Attention Mechanism | [CS7015](https://youtu.be/yInilk6x-OY), [CS480/680](https://youtu.be/OyFJWRnt_AY) | | [Tomek Korbak](https://tomekkorbak.com/2020/06/26/implementing-attention-in-pytorch/), [Jalammar](http://jalammar.github.io/illustrated-transformer/) |
 | Seq to seq models | | | |
 | Generative models | | | |
-| Graph Convolution Network | [Ahlad Kumar](https://youtube.com/playlist?list=PLdxQ7SoCLQANc6Q5HrKjALjjLD42IPRi-) | | [Medium](https://towardsdatascience.com/understanding-graph-convolutional-networks-for-node-classification-a2bfdb7aba7b) |
+| Graph Convolution Network | [Ahlad Kumar](https://youtube.com/playlist?list=PLdxQ7SoCLQANc6Q5HrKjALjjLD42IPRi-) | | [Medium](https://towardsdatascience.com/understanding-graph-convolutional-networks-for-node-classification-a2bfdb7aba7b), [Attention In Graph](https://towardsdatascience.com/graph-attention-networks-under-the-hood-3bd70dc7a87) |
 
 #### Discussions : [pytorch forum](https://discuss.pytorch.org/), [stackoverflow](https://stackoverflow.com/)
 

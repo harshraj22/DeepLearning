@@ -13,3 +13,6 @@ Image Classification using computer vision
 &emsp; score = 100 * f1-score(actual_values, predicted_values, average='weighted')
   
 ### Tried Models and results:
+  | Model | Score (f1) | Other details |
+  |-------|-------|---------------|
+  | Inception Resnet V2 | 0.42 | Poor implementation. Missed batchNorm and stratified split of data |

@@ -2,7 +2,7 @@
 
 | Topic | Video (YouTube) | Video (Courses) | Blog |
 |-------|-----------------|-----------------|------|
-| PyTorch | [Python Engineer](https://www.youtube.com/watch?v=EMXfZB8FVUA&list=PLqnslRFeH2UrcDBWF5mfPGpqQDSta6VK4), [Aladdin Persson](https://www.youtube.com/watch?v=2S1dgHpqCdk&list=PLhhyoLH6IjfxeoooqP9rhU3HJIAVAJ3Vz) | | [hsaghir](https://hsaghir.github.io/data_science/pytorch_starter/) |
+| PyTorch | [Python Engineer](https://www.youtube.com/watch?v=EMXfZB8FVUA&list=PLqnslRFeH2UrcDBWF5mfPGpqQDSta6VK4), [Aladdin Persson](https://www.youtube.com/watch?v=2S1dgHpqCdk&list=PLhhyoLH6IjfxeoooqP9rhU3HJIAVAJ3Vz) | [Udacity](https://www.udacity.com/course/deep-learning-nanodegree--nd101) with [github](https://github.com/udacity/deep-learning-v2-pytorch) repo for pytorch | [hsaghir](https://hsaghir.github.io/data_science/pytorch_starter/) |
 | Back propagation | | | |
 | Loss functions | | | |
 | Optimizers | | | |

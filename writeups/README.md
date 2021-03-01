@@ -20,5 +20,6 @@
 #### Other helpful topics explained:
 - Matrix calculations in forward propagation of neural network: [Analytics Vidhya](https://medium.com/analytics-vidhya/mathematics-and-vectorization-behind-neural-network-b6d491fa617d)
 - [BatchNormalization](https://www.youtube.com/watch?v=DtEq44FTPM4) intuition for training models
+- All about [object detection](https://www.youtube.com/playlist?list=PL1GQaVhO4f_jLxOokW7CS5kY_J1t1T17S)
 - TorchText ([video](https://www.youtube.com/watch?v=KRgq4VnCr7I), [blog](https://www.analyticsvidhya.com/blog/2020/01/first-text-classification-in-pytorch/)) for dealing with text data in NLP. Demo with [glove](https://www.cs.toronto.edu/~lczhang/360/lec/w06/w2v.html)
 

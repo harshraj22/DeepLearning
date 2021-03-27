@@ -1,10 +1,9 @@
-# Work In Progress
+## constest link [kaggle](https://www.kaggle.com/c/nlp-getting-started/overview)
 
-### Status:
-  - Overfitting :rofl:
-### Approach:
-  - LSTM with attention, followed by Linear Layers
-  - Glove pretrained embedding
+## Summary
+Binary classification of tweets
+
+## Tried Models and Results
 
 | Model | Score | Details | Scr |
 |-------|-------|---------|-----|

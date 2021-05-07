@@ -1,4 +1,4 @@
-# https://arxiv.org/pdf/1712.08036.pdf
+# https://www.cs.cmu.edu/~rsalakhu/papers/oneshot1.pdf
 
 import torch
 import torch.nn as nn

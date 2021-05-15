@@ -18,6 +18,7 @@
 #### Good Hands on tutorials: [Ben Trevett's Colab Notebooks](https://github.com/bentrevett)
 
 #### Other helpful topics explained:
+- `dim` parameter in `torch.tensor` [here](https://towardsdatascience.com/understanding-dimensions-in-pytorch-6edf9972d3be)
 - Matrix calculations in forward propagation of neural network: [Analytics Vidhya](https://medium.com/analytics-vidhya/mathematics-and-vectorization-behind-neural-network-b6d491fa617d)
 - [BatchNormalization](https://www.youtube.com/watch?v=DtEq44FTPM4) intuition for training models
 - [Regularisation](https://youtu.be/iuJgyiS7BKM) basic overview.

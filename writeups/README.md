@@ -7,7 +7,7 @@
 | Loss functions | [cross entropy](https://www.youtube.com/watch?v=sbvv-uQmwVY) | | [Kaggle](https://www.kaggle.com/avilay/pytorch-loss-functions-tutorial) |
 | Optimizers | | | |
 | Convolutional Neural Network | | |
-| Recurrent Neural Network | | |
+| Recurrent Neural Network | | | [LSTMs](https://colah.github.io/posts/2015-08-Understanding-LSTMs/) |
 |Attention Mechanism | [CS7015](https://youtu.be/yInilk6x-OY), [CS480/680](https://youtu.be/OyFJWRnt_AY) | | [Tomek Korbak](https://tomekkorbak.com/2020/06/26/implementing-attention-in-pytorch/), [Jalammar](http://jalammar.github.io/illustrated-transformer/) |
 | Seq to seq models | | | |
 | Generative models | [GANs](https://www.youtube.com/playlist?list=PLhhyoLH6IjfwIp8bZnzX8QR30TRcHO8Va) | | |

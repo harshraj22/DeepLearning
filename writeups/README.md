@@ -6,7 +6,7 @@
 | Back propagation | | | [backprop.org](https://www.backprop.org/) |
 | Loss functions | [cross entropy](https://www.youtube.com/watch?v=sbvv-uQmwVY) | | [Kaggle](https://www.kaggle.com/avilay/pytorch-loss-functions-tutorial) |
 | Optimizers | | | |
-| Convolutional Neural Network | | |
+| Convolutional Neural Network | | | [Arxiv](https://arxiv.org/pdf/1603.07285.pdf) |
 | Recurrent Neural Network | | | [LSTMs](https://colah.github.io/posts/2015-08-Understanding-LSTMs/) |
 |Attention Mechanism | [CS7015](https://youtu.be/yInilk6x-OY), [CS480/680](https://youtu.be/OyFJWRnt_AY) | | [Tomek Korbak](https://tomekkorbak.com/2020/06/26/implementing-attention-in-pytorch/), [Jalammar](http://jalammar.github.io/illustrated-transformer/) |
 | Seq to seq models | | | |

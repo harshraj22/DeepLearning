@@ -25,4 +25,5 @@
 - All about object detection [:movie_camera:](https://www.youtube.com/playlist?list=PLog3nOPCjKBneGyffEktlXXMfv1OtKmCs), [:movie_camera:](https://www.youtube.com/playlist?list=PL1GQaVhO4f_jLxOokW7CS5kY_J1t1T17S), [:notebook:](https://d2l.ai/chapter_computer-vision/rcnn.html)
 - Fine tuning faster-rcnn in PyTorch [Kaggle Notebook](https://www.kaggle.com/yerramvarun/fine-tuning-faster-rcnn-using-pytorch)
 - TorchText ([video](https://www.youtube.com/watch?v=KRgq4VnCr7I), [blog](https://www.analyticsvidhya.com/blog/2020/01/first-text-classification-in-pytorch/)) for dealing with text data in NLP. Demo with [glove](https://www.cs.toronto.edu/~lczhang/360/lec/w06/w2v.html)
+- Visual Interpretability for Convolutional Neural Networks [blog](https://towardsdatascience.com/visual-interpretability-for-convolutional-neural-networks-2453856210ce), [video](https://www.youtube.com/watch?v=rRWxRSEr8iE)
 

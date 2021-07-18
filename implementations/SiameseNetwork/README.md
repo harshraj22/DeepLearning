@@ -16,3 +16,4 @@
 
 
 #### Training details:
+![image](https://user-images.githubusercontent.com/46635452/126056313-c3e23051-267c-4796-b604-0044ef9d9aa3.png)

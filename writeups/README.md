@@ -20,7 +20,7 @@
 #### Other helpful topics explained:
 - `dim` parameter in `torch.tensor` [:notebook:](https://towardsdatascience.com/understanding-dimensions-in-pytorch-6edf9972d3be)
 - Matrix calculations in forward propagation of neural network: [:notebook:](https://medium.com/analytics-vidhya/mathematics-and-vectorization-behind-neural-network-b6d491fa617d)
-- [BatchNormalization](https://www.youtube.com/watch?v=DtEq44FTPM4) intuition for training models
+- [BatchNormalization](https://www.youtube.com/watch?v=DtEq44FTPM4) intuition for training models. Some more details on [d2l](https://d2l.ai/chapter_convolutional-modern/batch-norm.html)
 - [Regularisation](https://youtu.be/iuJgyiS7BKM) basic overview.
 - All about object detection [:movie_camera:](https://www.youtube.com/playlist?list=PLog3nOPCjKBneGyffEktlXXMfv1OtKmCs), [:movie_camera:](https://www.youtube.com/playlist?list=PL1GQaVhO4f_jLxOokW7CS5kY_J1t1T17S), [:notebook:](https://d2l.ai/chapter_computer-vision/rcnn.html)
 - Fine tuning faster-rcnn in PyTorch [Kaggle Notebook](https://www.kaggle.com/yerramvarun/fine-tuning-faster-rcnn-using-pytorch)

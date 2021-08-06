@@ -12,6 +12,7 @@
 | Seq to seq models | | | |
 | Generative models | [GANs](https://www.youtube.com/playlist?list=PLhhyoLH6IjfwIp8bZnzX8QR30TRcHO8Va) | | |
 | Graph Convolution Network | [Ahlad Kumar](https://youtube.com/playlist?list=PLdxQ7SoCLQANc6Q5HrKjALjjLD42IPRi-) | | [Medium](https://towardsdatascience.com/understanding-graph-convolutional-networks-for-node-classification-a2bfdb7aba7b), [Attention In Graph](https://towardsdatascience.com/graph-attention-networks-under-the-hood-3bd70dc7a87) |
+| BLEU, METEOR, CIDER | | | [BLEU](https://towardsdatascience.com/bleu-bilingual-evaluation-understudy-2b4eab9bcfd1) |
 
 #### Discussions : [pytorch forum](https://discuss.pytorch.org/), [stackoverflow](https://stackoverflow.com/)
 

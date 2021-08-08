@@ -1,4 +1,5 @@
 ## Index
+- [NPTEL Theory: Machine Learning for Engineering and Science Applications](https://youtube.com/playlist?list=PLyqSpQzTE6M-SISTunGRBRiZk7opYBf_K)
 - [Machine Learning Algos implemented in PyTorch](https://youtu.be/rLOyrWV8gmA)  📷
 - [SMVs](https://youtube.com/playlist?list=PLC0PzjY99Q_Xc5IK-UE4FX7Loz1auXylYa)
 - [Math for SVM: Lagrange-Duality](https://www.svm-tutorial.com/2016/09/duality-lagrange-multipliers/)  📓

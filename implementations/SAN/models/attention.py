@@ -22,8 +22,25 @@ class Attention(nn.Module):
 		Returns:
 			pi (m): Attention coeeficient (alpha) corresponding to each feature vector
 		"""
-		# h.shape: (hidden_dim, m)
-		h = self.tanh(self.w1(vi) + self.w2(vq))
+		a = self.w1(vi)
+		# unsqueeze for adding vector to matrix.
+		# read about broadcasting: https://pytorch.org/docs/stable/notes/broadcasting.html
+		b = torch.unsqueeze(self.w2(vq), -2)
+		# h.shape: (m, hidden_dim)
+		h = self.tanh(a + b)
 		# pi.shape: (m, 1)
 		pi = F.softmax(self.wp(h))
 		return pi
+	
+
+if __name__ == '__main__':
+	m, d, hidden_dim = (14 * 14), 120, 53
+	bs = 2
+
+	vi = torch.rand((bs, m, d))
+	u = torch.rand((bs, d))
+
+	model = Attention(hidden_dim, d, d)
+	out = model(vi, u)
+
+	assert out.shape == (bs, m, 1)

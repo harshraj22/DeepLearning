@@ -32,7 +32,28 @@ class Attention(nn.Module):
 		pi = F.softmax(self.wp(h))
 		return pi
 	
+	
+class AttentionLayer(nn.Module):
+	def __init__(self, hidden_dim, img_dim, ques_dim):
+		super(AttentionLayer, self).__init__()
+		self.attention = Attention(hidden_dim, img_dim, ques_dim)
 
+	def forward(self, vi, u):
+		"""Implements an Attention Layer. Question feature 'u' is repeatedly passed through this layer,
+		it calculates the attention over the image features, and merges the features into itself.
+
+		Args:
+			vi (m, d): Visual features of image, where m = (width * height) of feature map
+			u (d):     Features of the question
+
+		Returns:
+			u (d): Features of question after applying the attention over the image
+		"""
+		pi = self.attention(vi, u)
+		u = torch.sum(pi * vi) + torch.unsqueeze(u, dim=-2)
+		return torch.squeeze(u, dim=-2)
+	
+	
 if __name__ == '__main__':
 	m, d, hidden_dim = (14 * 14), 120, 53
 	bs = 2

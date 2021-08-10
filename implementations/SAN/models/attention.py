@@ -39,7 +39,7 @@ class AttentionLayer(nn.Module):
 		self.attention = Attention(hidden_dim, img_dim, ques_dim)
 
 	def forward(self, vi, u):
-		"""Implements an Attention Layer. Question feature 'u' is repeatedly passed through this layer,
+		"""Implements Stacked Attention Layer. Question feature 'u' is repeatedly passed through this layer,
 		it calculates the attention over the image features, and merges the features into itself.
 
 		Args:

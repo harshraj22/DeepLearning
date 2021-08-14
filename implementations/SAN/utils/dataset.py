@@ -1,5 +1,6 @@
 from torch.utils.data import Dataset, DataLoader
 from tqdm.autonotebook import tqdm
+import torch
 from PIL import Image
 import numpy as np
 

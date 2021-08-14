@@ -9,6 +9,13 @@ The __getitem__ method must return a dict with the following key, value pairs:
     'ques': tensor of ints, representing the index of words in the vocab
     'ans': tensor of int, representing the index of word answer
     'img': tensor representing the image
+    
+Get Images for the dataset:
+    ! wget http://datasets.d2.mpi-inf.mpg.de/mateusz14visual-turing/nyu_depth_images.tar
+Get Train question & ans:
+    ! wget https://raw.githubusercontent.com/jayantk/lsp/master/data/daquar/reduced/qa.37.raw.train.txt
+DAQAR dataset:
+    https://github.com/jayantk/lsp/tree/master/data/daquar
 """
 
 

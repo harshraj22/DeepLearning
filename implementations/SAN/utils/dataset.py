@@ -37,8 +37,8 @@ class VQADataset(Dataset):
     for index, line in tqdm(enumerate(data[::2]), desc='Iterating over questions'):
       img = line.replace('?', '').strip(' ').split()[-1] + '.png'
       dct = {
-          'ques': self.tokenizer.encode(line),
-          'ans': self.tokenizer.convert_tokens_to_ids([data[2*index+1]]),
+          'ques': torch.cat(self.tokenizer.encode(line)),
+          'ans': torch.cat(self.tokenizer.convert_tokens_to_ids([data[2*index+1]])),
           'img_file_name': img
       }
 
@@ -53,3 +53,7 @@ class VQADataset(Dataset):
     img = Image.open(self.img_dir + dct['img_file_name'])
     dct['img'] = torch.from_numpy(np.array(img))
     return dct
+
+
+if __name__ == '__main__':
+  print(torch.__version__)

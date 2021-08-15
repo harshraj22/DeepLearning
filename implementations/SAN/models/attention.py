@@ -29,7 +29,7 @@ class Attention(nn.Module):
 		# h.shape: (m, hidden_dim)
 		h = self.tanh(a + b)
 		# pi.shape: (m, 1)
-		pi = F.softmax(self.wp(h))
+		pi = F.softmax(self.wp(h), dim=1)
 		return pi
 	
 	

@@ -36,7 +36,8 @@ class SAN(nn.Module):
 
     img = self.img_enc(img)
     ques = self.ques_enc(ques)
-    # u = self.att(img, ques)
+    
+    # Try Normalizing
     u = ques
     for layer in self.att:
       u = layer(img, u)

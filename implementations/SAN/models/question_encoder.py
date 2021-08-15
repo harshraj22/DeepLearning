@@ -23,7 +23,7 @@ class QuestionEncoder(nn.Module):
             c (N, out_size): Feature vector corresponding to each question vector
         """
         output, (h, c) = self.lstm(self.embed(x))
-        return torch.squeeze(c, dim=0)
+        return torch.squeeze(h, dim=0)
 
 
 if __name__ == '__main__':

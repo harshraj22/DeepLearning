@@ -22,6 +22,7 @@ class Attention(nn.Module):
 		Returns:
 			pi (m): Attention coeeficient (alpha) corresponding to each feature vector
 		"""
+		assert vi.shape[-1] == vq.shape[-1], "Dimentions of Vi and Vq don't match during Attention"
 		a = self.w1(vi)
 		# unsqueeze for adding vector to matrix.
 		# read about broadcasting: https://pytorch.org/docs/stable/notes/broadcasting.html
@@ -50,6 +51,7 @@ class AttentionLayer(nn.Module):
 			u (d): Features of question after applying the attention over the image
 		"""
 		pi = self.attention(vi, u)
+		assert pi.shape[1] == vi.shape[1], f"pi ({pi.shape}) and vi ({vi.shape}) don't have same shape in AttentionLayer"
 		u = torch.sum(pi * vi) + torch.unsqueeze(u, dim=-2)
 		return torch.squeeze(u, dim=-2)
 	

@@ -23,7 +23,7 @@
 - Matrix calculations in forward propagation of neural network: [:notebook:](https://medium.com/analytics-vidhya/mathematics-and-vectorization-behind-neural-network-b6d491fa617d)
 - [BatchNormalization](https://www.youtube.com/watch?v=DtEq44FTPM4) intuition for training models. Some more details on [d2l](https://d2l.ai/chapter_convolutional-modern/batch-norm.html)
 - [Regularisation](https://youtu.be/iuJgyiS7BKM) basic overview.
-- All about object detection [:movie_camera:](https://www.youtube.com/playlist?list=PLog3nOPCjKBneGyffEktlXXMfv1OtKmCs), [:movie_camera:](https://www.youtube.com/playlist?list=PL1GQaVhO4f_jLxOokW7CS5kY_J1t1T17S), [:notebook:](https://d2l.ai/chapter_computer-vision/rcnn.html)
+- All about object detection [:movie_camera:](https://www.youtube.com/playlist?list=PLog3nOPCjKBneGyffEktlXXMfv1OtKmCs), [:movie_camera:](https://www.youtube.com/playlist?list=PL1GQaVhO4f_jLxOokW7CS5kY_J1t1T17S), [:notebook:](https://d2l.ai/chapter_computer-vision/rcnn.html), [:notebook:](https://tryolabs.com/blog/2018/01/18/faster-r-cnn-down-the-rabbit-hole-of-modern-object-detection/)
 - [Region Proposal Network](https://medium.com/@nabil.madali/demystifying-region-proposal-network-rpn-faa5a8fb8fce)
 - Fine tuning faster-rcnn in PyTorch [Kaggle Notebook](https://www.kaggle.com/yerramvarun/fine-tuning-faster-rcnn-using-pytorch)
 - TorchText ([video](https://www.youtube.com/watch?v=KRgq4VnCr7I), [blog](https://www.analyticsvidhya.com/blog/2020/01/first-text-classification-in-pytorch/)) for dealing with text data in NLP. Demo with [glove](https://www.cs.toronto.edu/~lczhang/360/lec/w06/w2v.html)

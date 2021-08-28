@@ -8,7 +8,7 @@
 | Optimizers | | | |
 | Convolutional Neural Network | | | [Kaggle](https://www.kaggle.com/andradaolteanu/convolutional-neural-nets-cnns-explained), [TransposeConv](https://arxiv.org/pdf/1603.07285.pdf) |
 | Recurrent Neural Network | | | [LSTMs](https://colah.github.io/posts/2015-08-Understanding-LSTMs/) |
-|Attention Mechanism | [CS7015](https://youtu.be/yInilk6x-OY), [CS480/680](https://youtu.be/OyFJWRnt_AY) | | [Tomek Korbak](https://tomekkorbak.com/2020/06/26/implementing-attention-in-pytorch/), [Jalammar](http://jalammar.github.io/illustrated-transformer/) |
+|Attention Mechanism | [CS7015](https://youtu.be/yInilk6x-OY), [CS480/680](https://youtu.be/OyFJWRnt_AY) | | [MultiHead Attention](https://towardsdatascience.com/transformers-explained-visually-part-3-multi-head-attention-deep-dive-1c1ff1024853), [Tomek Korbak](https://tomekkorbak.com/2020/06/26/implementing-attention-in-pytorch/), [Jalammar](http://jalammar.github.io/illustrated-transformer/) |
 | Seq to seq models | | | |
 | Generative models | [GANs](https://www.youtube.com/playlist?list=PLhhyoLH6IjfwIp8bZnzX8QR30TRcHO8Va) | | |
 | Graph Convolution Network | [Ahlad Kumar](https://youtube.com/playlist?list=PLdxQ7SoCLQANc6Q5HrKjALjjLD42IPRi-) | | [Medium](https://towardsdatascience.com/understanding-graph-convolutional-networks-for-node-classification-a2bfdb7aba7b), [Attention In Graph](https://towardsdatascience.com/graph-attention-networks-under-the-hood-3bd70dc7a87) |

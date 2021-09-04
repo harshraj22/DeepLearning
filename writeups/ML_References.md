@@ -6,10 +6,10 @@
 - [Covariate Shift](https://www.analyticsvidhya.com/blog/2017/07/covariate-shift-the-hidden-problem-of-real-world-data-science/) : changes in the data distribution :notebook:
 - [Handbook](https://machinelearningmastery.com/framework-for-imbalanced-classification-projects/) for imbalanced data problems
 - [Boosting](https://www.youtube.com/watch?v=MIPkK5ZAsms&ab_channel=CodeEmporium) explained well
+- Math for [PCA](https://www.youtube.com/watch?v=dhK8nbtii6I)
 
 
 #### To Do:
 - Naive Bayes & Bayesian Belief Networks
 - K Means
-- PCA
 - XG Boost

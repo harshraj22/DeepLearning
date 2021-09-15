@@ -20,6 +20,7 @@
 
 #### Other helpful topics explained:
 - `dim` parameter in `torch.tensor` [:notebook:](https://towardsdatascience.com/understanding-dimensions-in-pytorch-6edf9972d3be)
+- understand `torch.tensor.view` [here](https://stackoverflow.com/a/65970435)
 - Matrix calculations in forward propagation of neural network: [:notebook:](https://medium.com/analytics-vidhya/mathematics-and-vectorization-behind-neural-network-b6d491fa617d)
 - [BatchNormalization](https://www.youtube.com/watch?v=DtEq44FTPM4) intuition for training models. Some more details on [d2l](https://d2l.ai/chapter_convolutional-modern/batch-norm.html)
 - [Regularisation](https://youtu.be/iuJgyiS7BKM) basic overview.

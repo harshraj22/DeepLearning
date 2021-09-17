@@ -7,6 +7,7 @@
 - [Handbook](https://machinelearningmastery.com/framework-for-imbalanced-classification-projects/) for imbalanced data problems
 - [Boosting](https://www.youtube.com/watch?v=MIPkK5ZAsms&ab_channel=CodeEmporium) explained well
 - Math for [PCA](https://www.youtube.com/watch?v=dhK8nbtii6I)
+- [Word to vec](https://youtu.be/f7o8aDNxf7k)
 
 
 #### To Do:

@@ -7,4 +7,5 @@ Src: [open.ai blog](https://spinningup.openai.com/en/latest/spinningup/rl_intro2
 | Topic | Video | Blog | Code |
 |-------|-------|------|------|
 | Intro to RL | | [freecodecamp](https://www.freecodecamp.org/news/diving-deeper-into-reinforcement-learning-with-q-learning-c18d0db58efe/) | |
+| Open AI Gym | | | [Making custom env](https://colab.research.google.com/github/araffin/rl-tutorial-jnrr19/blob/master/5_custom_gym_env.ipynb#scrollTo=rzevZcgmJmhi) |
 |Policy Gradient | [youtube](https://www.youtube.com/watch?v=cQfOQcpYRzE&ab_channel=ElliotWaite) | |

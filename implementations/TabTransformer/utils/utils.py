@@ -24,13 +24,13 @@ class CategoryEncoder:
         self.index, self.offset = [], 0
 
         for column_index, categories in enumerate(all_categories):
-            # categories = set(categories)
+            categories = set(categories)
             self.index.append(defaultdict(lambda: self.offset))
 
             for index, category in enumerate(categories):
                 self.index[column_index][category] = index + 1 + self.offset
             
-            self.offset += (len(categories) + 1) 
+            self.offset += len(categories) + 1 
 
     def get_index(self, column_index, word):
         return self.index[column_index][word]

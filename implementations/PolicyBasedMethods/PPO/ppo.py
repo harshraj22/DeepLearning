@@ -1,3 +1,11 @@
+""" 
+References:
+https://github.com/ashleve/deep_reinforcement_learning/blob/master/PPO.py
+https://github.com/sweetice/Deep-reinforcement-learning-with-pytorch/blob/master/Char07%20PPO/PPO_CartPole_v0.py
+https://spinningup.openai.com/en/latest/algorithms/ppo.html#pseudocode
+"""
+
+
 import torch
 import torch.nn as nn
 from torch.optim import Adam
@@ -183,5 +191,8 @@ for i in tqdm(range(NUM_GAMES)):
         tqdm.write(f'Current Reward: {current_reward}')
 
 env.close()
-plt.plot(all_rewards)
+plt.plot(all_rewards) # , xlabel='Game Num', ylabel='Reward')
+plt.xlabel('Game Num')
+plt.ylabel('Reward')
+plt.title('PPO on CartPole-v1')
 plt.savefig('fig.jpg')

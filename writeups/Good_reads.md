@@ -1,1 +1,2 @@
 - [Medium](https://gordicaleksa.medium.com/how-i-got-a-job-at-deepmind-as-a-research-engineer-without-a-machine-learning-degree-1a45f2a781de) article about the story of [Aleksa Gordic](https://www.linkedin.com/in/aleksagordic?miniProfileUrn=urn%3Ali%3Afs_miniProfile%3AACoAACYdwKsB9_xmm5toYADSzYyGuIusSRinIsQ&lipi=urn%3Ali%3Apage%3Ad_flagship3_detail_base%3BJxNQXOXGTYCLEXUH4wJmJw%3D%3D)
+- [Medium](https://towardsdatascience.com/my-journey-to-kaggle-master-at-the-age-of-14-e2c42b19c6f7) article on Andy Wang's (Kaggle competition master) suggestion on competing on kaggle

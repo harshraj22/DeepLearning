@@ -21,6 +21,7 @@ wandb.init(project='Tab-Transformer', entity='harshraj22') # , mode="disabled")
 
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg):
+    wandb.config.update(dict(cfg))
     # Initialize the dataset
     blastchar_dataset = BlastcharDataset(cfg.dataset.path)
     NUM_CATEGORICAL_COLS = blastchar_dataset.num_categorical_cols
@@ -52,8 +53,7 @@ def main(cfg):
         logging.info(f'Loaded model weights from: {weights_file}')
 
     optimizer = Adam(model.parameters())
-
-    # To Do: set up a LR schedular
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, min_lr=0.00001, patience=6, verbose=True)
 
     # To Do: Add accuracy metric
 
@@ -84,9 +84,14 @@ def main(cfg):
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
+                # else:
+                #     scheduler.step()
                 phase_loss += loss.item()
             tqdm.write(f'{epoch}/{cfg.params.num_epochs}: {phase}: loss {loss:.3f}')
             wandb.log({f'{phase}_loss': phase_loss})
+
+        if phase == Phase.Val:
+            scheduler.step(phase_loss)
 
     if 'store' in cfg.keys():
         # logging.debug(pathlib.Path.cwd())

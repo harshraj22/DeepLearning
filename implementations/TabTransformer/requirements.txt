@@ -1,0 +1,6 @@
+hydra-colorlog==1.1.0
+hydra-core==1.1.1
+wandb==0.12.9
+tqdm
+pandas
+numpy

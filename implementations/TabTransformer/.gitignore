@@ -1,2 +1,13 @@
 */__pycache__/*
+
+# Don't track dataset files
 data/*
+
+# created by Hydra. Ignore those
+outputs/*
+
+# wandb creates after each run
+wandb/*
+
+# model weights
+saved/*

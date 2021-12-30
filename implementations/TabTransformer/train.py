@@ -1,3 +1,4 @@
+from math import log
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -8,13 +9,15 @@ from tqdm import tqdm
 from pprint import pprint
 import wandb
 import hydra
+import logging
+import pathlib
 
 from models.transformer import TabTransformer
 from data_loader.datasets import BlastcharDataset
 from utils.utils import Phase
 
-wandb.init(project='Tab-Transformer', entity='harshraj22', mode="disabled")
-
+logging.basicConfig(level=logging.NOTSET)
+wandb.init(project='Tab-Transformer', entity='harshraj22') # , mode="disabled")
 
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg):
@@ -40,10 +43,21 @@ def main(cfg):
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = TabTransformer(blastchar_dataset.num_categories, mlp, embed_dim=EMBED_DIM).to(device)
+
+    # use pretrained weights, use: +load='path to weights'
+    # in the command line arg, eg: python3 train.py +load='./saved/models/v1.pth'
+    if 'load' in cfg.keys():
+        weights_file = hydra.utils.to_absolute_path(cfg.load)
+        model.load_state_dict(torch.load(weights_file))
+        logging.info(f'Loaded model weights from: {weights_file}')
+
     optimizer = Adam(model.parameters())
 
     # To Do: set up a LR schedular
 
+    # To Do: Add accuracy metric
+
+    # To Do: Look for ways to plot train & val on same graph
 
     # Create the train and val dataset
     train_size = int(cfg.params.train_size * len(blastchar_dataset))
@@ -61,7 +75,7 @@ def main(cfg):
             else:
                 model.eval()
 
-            for batch in tqdm(dl, desc=f'Epoch: {epoch} / {cfg.params.num_epochs}, Phase: {phase}'):
+            for batch in tqdm(dl, desc=f'Epoch: {epoch}/{cfg.params.num_epochs}, {phase}'):
                 categorical_vals, continious_vals, ground_truths = batch
                 logits = model(categorical_vals.to(device), continious_vals.to(device))
                 loss = F.cross_entropy(logits, ground_truths.long().to(device))
@@ -71,9 +85,15 @@ def main(cfg):
                     loss.backward()
                     optimizer.step()
                 phase_loss += loss.item()
-            tqdm.write(f'{epoch} / {cfg.params.num_epochs}: {phase}: loss {loss:.3f}')
+            tqdm.write(f'{epoch}/{cfg.params.num_epochs}: {phase}: loss {loss:.3f}')
             wandb.log({f'{phase}_loss': phase_loss})
 
+    if 'store' in cfg.keys():
+        # logging.debug(pathlib.Path.cwd())
+        weights_file = hydra.utils.to_absolute_path(cfg.store)
+        pathlib.Path(weights_file).touch()
+        torch.save(model.state_dict(), weights_file)
+        logging.info(f'Saved weights to: {weights_file}')
 
 if __name__ == '__main__':
     main()

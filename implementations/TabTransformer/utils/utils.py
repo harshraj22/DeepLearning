@@ -5,7 +5,8 @@ import pandas as pd
 
 class CategoryEncoder:
     """Given a list of set of categories, build up indexes corresponding to
-    each category.  """
+    each category. Each category in each column is mapped to a unique value
+    (here called index). """
     def __init__(self, all_categories:List[List[AnyStr]]):
         """
         Args:

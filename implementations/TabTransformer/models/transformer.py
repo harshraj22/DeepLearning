@@ -1,7 +1,10 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from transformer_block import TransformerBlock
+import sys
+
+
+from models.transformer_block import TransformerBlock
 import unittest
 import logging
 
@@ -53,11 +56,11 @@ class TabTransformer(nn.Module):
         
         # x_cat.shape: (num_cat_cols, embed_dim)
         x_cat = self.embed(x_cat)
-        assert tuple(x_cat.shape) == (batch_size, num_cat_cols, embed_dim), f'Error after converting to embeddings. Expected {(batch_size, num_cat_cols, embed_dim)}, got {x_cat.shape}'
+        assert tuple(x_cat.shape) == (batch_size, num_cat_cols, self.embed_dim), f'Error after converting to embeddings. Expected {(batch_size, num_cat_cols, embed_dim)}, got {x_cat.shape}'
 
         # x_cat.shape: (num_cat_cols, embed_dim)
         x_cat = self.transformer_block(x_cat)
-        assert tuple(x_cat.shape) == (batch_size, num_cat_cols, embed_dim), f'Error after transformer block. Expected {(batch_size, num_cat_cols, embed_dim)}, got {x_cat.shape}'
+        assert tuple(x_cat.shape) == (batch_size, num_cat_cols, self.embed_dim), f'Error after transformer block. Expected {(batch_size, num_cat_cols, embed_dim)}, got {x_cat.shape}'
 
         _, num_cont_cols = x_cont.shape
         assert _ == batch_size, f'Batch size of x_cat({batch_size}), x_cont({_}) does not match'

@@ -2,6 +2,13 @@ from collections import defaultdict
 from typing import List, AnyStr
 import unittest
 import pandas as pd
+import enum
+
+class Phase(enum.Enum):
+    Train = enum.auto()
+    Val = enum.auto()
+
+
 
 class CategoryEncoder:
     """Given a list of set of categories, build up indexes corresponding to

@@ -68,12 +68,8 @@ class TabTransformer(nn.Module):
 
         x_cat = x_cat.view(batch_size, -1)
 
-        # logging.debug(f'{x_cat.shape}, {x_cont.shape}\n')
-
         x = torch.cat((x_cat, x_cont), dim=1)
         assert x.shape[1] == num_cat_cols * self.embed_dim + num_cont_cols, f'Some issue while concatenating x_cat({x_cat.shape}), x_cont({x_cont.shape}). Expected {num_cat_cols * self.embed_dim + num_cont_cols}, got {x.shape[1]}'
-
-        # logging.debug(f'{x.shape}')
 
         return self.mlp(x)
 

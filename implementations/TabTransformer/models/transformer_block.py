@@ -15,13 +15,15 @@ class TransformerBlock(nn.Module):
         self.embed_dim = embed_dim
         self.multi_head_attention = nn.MultiheadAttention(self.embed_dim, self.num_attention_heads, batch_first=True)
         self.feed_forward = nn.Linear(self.embed_dim, self.embed_dim)
+        self.activation = nn.SiLU()
 
     def forward(self, x):
         y, _ = self.multi_head_attention(x, x, x)
-        x = F.normalize(x + y)
+        x = F.layer_norm(x + y, (self.embed_dim, ))
 
         y = self.feed_forward(x)
-        return F.normalize(x + y)
+        y = self.activation(y)
+        return F.layer_norm(x + y, (self.embed_dim, ))
 
 
 

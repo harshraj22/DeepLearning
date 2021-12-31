@@ -17,7 +17,7 @@ from data_loader.datasets import BlastcharDataset
 from utils.utils import Phase
 
 logging.basicConfig(level=logging.NOTSET)
-wandb.init(project='Tab-Transformer', entity='harshraj22') # , mode="disabled")
+wandb.init(project='Tab-Transformer', entity='harshraj22') #, mode="disabled")
 
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg):
@@ -32,14 +32,15 @@ def main(cfg):
     mlp = nn.Sequential(
             nn.Linear(NUM_CATEGORICAL_COLS * EMBED_DIM + NUM_CONTINIOUS_COLS, 50),
             nn.ReLU(),
-            nn.Dropout(0.2),
+            nn.BatchNorm1d(50),
+            nn.Dropout(cfg.params.dropout),
 
             nn.Linear(50, 20),
             nn.ReLU(),
-            nn.Dropout(0.2),
+            nn.BatchNorm1d(20),
+            nn.Dropout(cfg.params.dropout),
 
-            # To Do: Store the num of output classes as a param in the dataset itself
-            nn.Linear(20, 2)
+            nn.Linear(20, blastchar_dataset.num_classes)
     )
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -84,10 +85,9 @@ def main(cfg):
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
-                # else:
-                #     scheduler.step()
+
                 phase_loss += loss.item()
-            tqdm.write(f'{epoch}/{cfg.params.num_epochs}: {phase}: loss {loss:.3f}')
+            tqdm.write(f'{epoch}/{cfg.params.num_epochs}: {phase}: loss {phase_loss:.3f}')
             wandb.log({f'{phase}_loss': phase_loss})
 
         if phase == Phase.Val:
@@ -95,10 +95,13 @@ def main(cfg):
 
     if 'store' in cfg.keys():
         # logging.debug(pathlib.Path.cwd())
+        # hydra changes the current working directory. In order for the paths
+        # passed by the command line arg as expected, use the function to_absolute_path
         weights_file = hydra.utils.to_absolute_path(cfg.store)
         pathlib.Path(weights_file).touch()
         torch.save(model.state_dict(), weights_file)
         logging.info(f'Saved weights to: {weights_file}')
+
 
 if __name__ == '__main__':
     main()

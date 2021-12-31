@@ -8,3 +8,4 @@ params:
   batch_size: 32
   num_epochs: 30
   train_size: 0.8
+  dropout: 0.2

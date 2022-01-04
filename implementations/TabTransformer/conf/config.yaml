@@ -9,3 +9,4 @@ params:
   num_epochs: 30
   train_size: 0.8
   dropout: 0.2
+  weights: /nfs_home/janhavi2021/spring2021/tabTransformer/saved/models/400epochs.pth

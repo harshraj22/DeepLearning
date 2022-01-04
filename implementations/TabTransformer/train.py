@@ -1,4 +1,3 @@
-from math import log
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -44,7 +43,7 @@ def main(cfg):
     )
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    model = TabTransformer(blastchar_dataset.num_categories, mlp, embed_dim=EMBED_DIM).to(device)
+    model = TabTransformer(blastchar_dataset.num_categories, mlp, embed_dim=EMBED_DIM, num_cont_cols=NUM_CONTINIOUS_COLS).to(device)
 
     # use pretrained weights, use: +load='path to weights'
     # in the command line arg, eg: python3 train.py +load='./saved/models/v1.pth'

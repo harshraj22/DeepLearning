@@ -15,7 +15,7 @@ class TabTransformer(nn.Module):
     """Class implementing TabTransformer model.
     https://arxiv.org/pdf/2012.06678v1.pdf
     """
-    def __init__(self, col_embed_rows, mlp, num_transformer_block=6, embed_dim=32):
+    def __init__(self, col_embed_rows, mlp, num_transformer_block=6, embed_dim=32, num_cont_cols=4):
         """Initializing the TabTransformer Network
 
         Args:
@@ -40,6 +40,7 @@ class TabTransformer(nn.Module):
 
         self.embed = nn.Embedding(col_embed_rows, self.embed_dim)
         self.mlp = mlp
+        self.layer_norm = nn.LayerNorm(num_cont_cols)
         # self.dropout = nn.Dropout(0.2)
         # self.mlp = nn.Sequential(
         #     *[
@@ -64,7 +65,8 @@ class TabTransformer(nn.Module):
 
         _, num_cont_cols = x_cont.shape
         assert _ == batch_size, f'Batch size of x_cat({batch_size}), x_cont({_}) does not match'
-        x_cont = F.layer_norm(x_cont, (num_cont_cols,))
+        # x_cont = F.layer_norm(x_cont, (num_cont_cols,)) # changed to nn.layer_norm to encorporate captum interpretability
+        x_cont = self.layer_norm(x_cont)
 
         x_cat = x_cat.view(batch_size, -1)
 

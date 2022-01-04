@@ -14,29 +14,37 @@ Directory Structure:
 ```
 ├── README.md
 ├── conf
-│   └── config.yaml
-├── data
+│   └── config.yaml         <-- config file
+├── data                    <-- data directory  (for data files)
 │   └── Telco-Customer-Churn.csv
 ├── data_loader
 │   ├── __pycache__
 │   └── datasets.py
-├── models
+├── model_interpret.py       <-- model interpret script to understand input features influence on model's output
+├── models                   <-- model directory  (for model files)
 │   ├── __pycache__
 │   ├── transformer.py
 │   └── transformer_block.py
-├── outputs
-│   └── 2021-12-30
-│       ├── 22-24-21
-│       │   └── train.log
+├── outputs                  <-- output directory (created by Hydra) 
 ├── requirements.txt
 ├── saved
 │   └── models
-│       ├── v1.pth
-├── train.py
+│       └── 400epochs.pth    <-- saved model weights
+├── train.py                 <-- training script
 ├── utils
 │   ├── __pycache__
 │   └── utils.py
-└── wandb
+└── wandb                    <-- Logging experiments to weights and biases
 ```
+
+### Checks
+- [x] Easy to setup repo, with well structured directory partition
+- [x] Clean and readable codes
+- [x] Unit tests
+- [ ] Augmentations, EarlyStopping
+- [ ] Reproducable results (links to weights of the model)
+- [x] Configuration management using well tested tools like Hydra
+- [x] wandb for tracking experiments
+- [x] captum for model interpretability
 
 ![image](https://user-images.githubusercontent.com/46635452/145711600-22e3ccf9-f45a-49b6-b029-2315e8767b80.png)

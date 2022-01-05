@@ -1,0 +1,6 @@
+params:
+  batch_size: 512
+  mini_batch_size: 128
+  total_timesteps: 100_000
+  epochs: 5
+  actor_loss_clip: 0.2

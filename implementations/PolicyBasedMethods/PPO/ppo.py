@@ -1,198 +1,125 @@
-""" 
-References:
-https://github.com/ashleve/deep_reinforcement_learning/blob/master/PPO.py
-https://github.com/sweetice/Deep-reinforcement-learning-with-pytorch/blob/master/Char07%20PPO/PPO_CartPole_v0.py
-https://spinningup.openai.com/en/latest/algorithms/ppo.html#pseudocode
-"""
-
-
 import torch
 import torch.nn as nn
-from torch.optim import Adam
 import torch.nn.functional as F
-from torch.distributions import Categorical
+from torch.optim import Adam
 import numpy as np
-from tqdm import tqdm
-import logging
+
+from models.models import Actor, Critic
+from utils.memory import Memory
+from utils.utils import calculate_advantage
+
 import gym
-import matplotlib.pyplot as plt
+from gym.vector import SyncVectorEnv
+from gym.wrappers import RecordEpisodeStatistics
+import hydra
+import logging
+from tqdm import tqdm
+import wandb
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.NOTSET)
+c_handler = logging.StreamHandler()
+c_format = logging.Formatter('%(name)s : %(levelname)s - %(message)s')
+c_handler.setFormatter(c_format)
+logger.addHandler(c_handler)
 
-logging.basicConfig(level=logging.CRITICAL)
+wandb.init(project="ppo-Enhanced-CartPole-v1", entity="harshraj22") #, mode="disabled")
 
-class Actor(nn.Module):
-    def __init__(self):
-        super(Actor, self).__init__()
-        """Assuming the Actor for CartPole-v1 """
-        
-        self.l1 = nn.Linear(4, 2)
-        self.relu = nn.ReLU()
-        self.l2 = nn.Linear(2, 2)
+@hydra.main(config_path="conf", config_name="config")
+def main(cfg):
+    # so that the environment automatically resets
+    env = SyncVectorEnv([lambda: RecordEpisodeStatistics(gym.make('CartPole-v1'))])
+    # env = RecordEpisodeStatistics
+    actor, critic = Actor(), Critic()
+    actor_optim = Adam(actor.parameters(), eps=1e-5)
+    critic_optim = Adam(critic.parameters(), eps=1e-5)
+    memory = Memory(mini_batch_size=cfg.params.mini_batch_size, batch_size=cfg.params.batch_size)
+    obs = env.reset()
+    global_rewards = []
 
-    def forward(self, state):
-        action = self.relu(self.l1(state))
-        action = F.softmax(self.l2(action), dim=-1)
-        return Categorical(action)
+    NUM_UPDATES = cfg.params.total_timesteps // cfg.params.batch_size
+    cur_timestep = 0
 
-
-class Critic(nn.Module):
-    def __init__(self):
-        super(Critic, self).__init__()
-        """Assuming the Critic for CartPole-v1 """
-
-        self.l1 = nn.Linear(4, 2)
-        self.relu = nn.ReLU()
-        self.l2 = nn.Linear(2, 1)
-
-    def forward(self, state):
-        value = self.relu(self.l1(state))
-        return self.l2(value)
-
-
-class Memory:
-    def __init__(self) -> None:
-        self.states = []
-        self.actions = []
-        self.log_probs = []
-        self.rewards = []
-    
-    def clear(self):
-        self.states = []
-        self.actions = []
-        self.log_probs = []
-        self.rewards = []
-
-    def remember(self, state, action, log_prob, reward):
-        self.states.append(state)
-        self.actions.append(action)
-        self.log_probs.append(log_prob)
-        self.rewards.append(reward)
-
-    def merge(self, states, actions, log_probs, rewards):
-        for state, action, log_prob, reward in zip(states, actions, log_probs, rewards):
-            self.remember(state, action, log_prob, reward)
-        
-    def get_all(self):
-        return self.states, self.actions, self.log_probs, self.rewards
-
-
-# initialize all
-actor = Actor()
-critic = Critic()
-actor_optim = Adam(actor.parameters())
-critic_optim = Adam(critic.parameters())
-env = gym.make('CartPole-v1')
-memory = Memory()
-
-
-def compute_r2g(rewards, gamma=0.9):
-    """Given a rewards array, calculates the rewards-to-go (r2g), where
-    r2g[i] = rewards[i] + sum(
-        gamma**j * rewards[j] for j in range(i+1, len(rewards))
-    )
-
-    Args:
-        rewards (List[Int]): The rewards collected in a trajectory
-        gamma (float, optional): The discount factor. Defaults to 0.9.
-
-    Returns:
-        List[Int]: The Rewards-to-go as calculated by above formula.
-    """
-    r2g, cumm_reward = [], 0
-    for reward in reversed(rewards):
-        cumm_reward = reward + gamma*cumm_reward
-        r2g.append(cumm_reward)
-
-    return reversed(r2g)
-
-
-def play_single_game(env, actor: Actor, memory: Memory):
-    """Plays a single game in the environment and saves the trajectory in the
-    memory.
-
-    Args:
-        env (gym.env): The gym environment
-        actor (Actor): The actor, a neural net returning distributions
-        memory (Memory): The memory to save the trajectories.
-    """
-    obs, done = env.reset(), False
-    states, actions, log_probs, rewards = [], [], [], []
-    # logging.debug(f'Shape of obs: {obs.shape}')
-
-    while not done:
+    while cur_timestep < cfg.params.total_timesteps:
+        # keep playing the game
         obs = torch.as_tensor(obs, dtype=torch.float32)
-        dist = actor(obs)
-        # logging.debug(f'Shape of dist:, {dist}')
-        action = dist.sample()
-        # logging.debug(f'shape of action: {action.shape}: {action}')
-        log_prob = dist.log_prob(action)
-        obs, reward, done, info = env.step(action.item())
-        states.append(obs) # .detach())
-        rewards.append(reward) # .item())
-        log_probs.append(log_prob.detach())
-        actions.append(action)
-    
-    r2g = compute_r2g(rewards)
-    memory.merge(states, actions, log_probs, r2g)
+        with torch.no_grad():
+            dist = actor(obs)
+            action = dist.sample()
+            log_prob = dist.log_prob(action)
+            value = critic(obs)
+        action = action.cpu().numpy()
+        value = value.cpu().numpy()
+        log_prob = log_prob.cpu().numpy()
+        obs, reward, done, info = env.step(action)
+        # logger.info(f'obs: {obs}, action: {action}, log_prob: {log_prob} reward: {reward}, done: {done}, value: {value}')
+        # logger.info(f'obs: {type(obs)}, action: {type(action)}, log_prob: {type(log_prob)} reward: {type(reward)}, done: {type(done)}, value: {type(value)}')
+        # logger.info(f'obs: {obs.shape}, action: {action.shape}, log_prob: {log_prob.shape} reward: {reward.shape}, done: {done.shape}, value: {value.shape}')
+        # exit(0)
+        if done[0]:
+            tqdm.write(f'{info}')
+            global_rewards.append(info[0]['episode']['r'])
+            wandb.log({'Avg_Reward': np.mean(global_rewards[-10:])})
+        memory.remember(obs[0], action.item(), log_prob.item(), reward.item(), done.item(), value.item())
+        cur_timestep += 1
 
-    return sum(rewards)
+        # if len(memory.rewards) > 100:
+        #     tqdm.write(f'Average Score: {np.mean(memory.rewards[-100:])} | Memory Size: {len(memory.rewards)}')
+
+        # if the current timestep is a multiple of the batch size, then we need to update the model
+        if cur_timestep % cfg.params.batch_size == 0:
+            for epoch in tqdm(range(cfg.params.epochs), desc=f'Current timestep: {cur_timestep} / {cfg.params.total_timesteps}'):
+                # sample a batch from memory of experiences
+                old_states, old_actions, old_log_probs, old_rewards, old_dones, old_values, batch_indices = memory.sample()
+                old_log_probs = torch.tensor(old_log_probs, dtype=torch.float32)
+                advantage = calculate_advantage(old_rewards, old_values, old_dones)
+                # normalize the advantage
+                advantage = (advantage - advantage.mean()) / (advantage.std() + 1e-6)
+                advantage = torch.tensor(advantage, dtype=torch.float32)
+                old_rewards = torch.tensor(old_rewards, dtype=torch.float32)
+                
+                # logger.info(f'old_states: {old_states.shape}, old_actions: {old_actions.shape}, old_log_probs: {old_log_probs.shape}, old_rewards: {old_rewards.shape}, old_dones: {old_dones.shape}, old_values: {old_values.shape}')
+
+                # for each mini batch from batch, calculate advantage using GAE
+                for mini_batch_index in batch_indices:
+
+                    # update actor and critic
+                    dist = actor(torch.tensor(old_states[mini_batch_index], dtype=torch.float32).unsqueeze(0))
+                    actions = dist.sample()
+                    log_probs = dist.log_prob(actions).squeeze(0)
+
+                    ratio = torch.exp(log_probs - old_log_probs[mini_batch_index])
+                    actor_loss = -torch.min(
+                        ratio * advantage[mini_batch_index],
+                        torch.clamp(ratio, 1 - cfg.params.actor_loss_clip, 1 + cfg.params.actor_loss_clip) * advantage[mini_batch_index]
+                    ).mean()
+
+                    critic_loss = F.mse_loss(
+                        critic(torch.tensor(old_states[mini_batch_index], dtype=torch.float32).squeeze(0)).squeeze(-1),
+                        old_rewards[mini_batch_index] + advantage[mini_batch_index]
+                    )
+
+                    # print(actor_loss, critic_loss)
+                    # tqdm.write(f'{ratio}')
+                    loss = actor_loss + 0.5 * critic_loss
+                    actor_optim.zero_grad()
+                    critic_optim.zero_grad()
+                    loss.backward()
+                    actor_optim.step()
+                    critic_optim.step()
+            memory.reset()
+
+    # for update in range(NUM_UPDATES):
+    #     # for N epochs
+    #     for _ in range(cfg.params.epochs):
 
 
-def update(memory: Memory, actor: Actor, actor_optim: Adam, critic: Critic, critic_optim: Adam, eps=0.2):
-    # update the actor & critic parameters
-    actor_optim.zero_grad()
-    critic_optim.zero_grad()
 
-    # calculate Advantage (r2g - Value)
-    states, old_actions, old_log_probs, rewards = memory.get_all() 
-    old_log_probs = torch.stack(old_log_probs)
-    states = torch.tensor(np.array(states))
-    values = critic(states).view(-1) 
-
-    rewards = np.array(rewards)
-    rewards = (rewards - rewards.mean()) / (rewards.std() + 1e-5)
-    rewards = torch.tensor(rewards, requires_grad=True, dtype=torch.float32)
-
-    advantage = rewards - values
-
-    dist = actor(states)
-    actions = dist.sample()
-    log_probs = dist.log_prob(actions)
-
-    probs_ratio = log_probs / old_log_probs
-
-    actor_loss = -torch.min(
-        probs_ratio * advantage,
-        torch.clip(probs_ratio, 1-eps, 1+eps) * advantage
-    ).mean()
+    # observation = env.reset()
+    # observation, reward, done, info = env.step([0])
+    # logger.info(f'observation: {observation.shape}, reward: {reward.shape}, done: {done.shape}, info: {info}')
 
 
-    critic_loss = F.mse_loss(values, rewards)
-    logging.debug(f'Shapes: \nstates: {states.shape}\nvalues: {values.shape}, {values.requires_grad}\nrewards: {rewards.shape}, {rewards.requires_grad}\nadvantage: {advantage.shape}\n probs_ratio: {probs_ratio.shape}')
 
-    loss = actor_loss + critic_loss
-    logging.debug(f'Loss: {loss}, actor_loss: {actor_loss}, critic_loss: {critic_loss}')
-    loss.backward()
-    actor_optim.step()
-    critic_optim.step()
-
-
-NUM_GAMES = 2000
-all_rewards = []
-for i in tqdm(range(NUM_GAMES)):
-    # play game and save trajectories
-    current_reward = play_single_game(env, actor, memory)
-    all_rewards.append(current_reward)
-
-    # every 5th game, update the actor and critic
-    if i%5 == 0:
-        update(memory, actor, actor_optim, critic, critic_optim)
-        memory.clear()
-        tqdm.write(f'Current Reward: {current_reward}')
-
-env.close()
-plt.plot(all_rewards) # , xlabel='Game Num', ylabel='Reward')
-plt.xlabel('Game Num')
-plt.ylabel('Reward')
-plt.title('PPO on CartPole-v1')
-plt.savefig('fig.jpg')
+if __name__ == '__main__':
+    main()

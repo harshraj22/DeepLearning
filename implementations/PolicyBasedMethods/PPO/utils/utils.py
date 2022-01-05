@@ -1,0 +1,19 @@
+import torch
+import torch.nn as nn
+import numpy as np
+
+
+def calculate_advantage(rewards, values, dones, gae_gamma=0.9, gae_lambda=0.95):
+    advantage = np.zeros_like(rewards)
+
+    # rewards.shape: (batch_size)
+    for t, _ in enumerate(rewards):
+        discount, a_t = 1, 0
+        # calculate advantage at timestep t
+        for k in range(t, len(rewards)-1):
+            a_t += discount * (rewards[k] + gae_gamma * values[k+1] * (1-int(dones[k])) - values[k])
+            discount *= gae_gamma * gae_lambda
+
+        advantage[t] = a_t
+    
+    return advantage

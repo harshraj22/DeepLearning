@@ -31,7 +31,7 @@ c_format = logging.Formatter('%(name)s : %(levelname)s - %(message)s')
 c_handler.setFormatter(c_format)
 logger.addHandler(c_handler)
 
-wandb.init(project="ppo-Enhanced-CartPole-v1", entity="harshraj22")#, mode="disabled")
+wandb.init(project="ppo-Enhanced-CartPole-v1", entity="harshraj22", mode="disabled")
 
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg):

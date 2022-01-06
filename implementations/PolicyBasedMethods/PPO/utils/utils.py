@@ -3,7 +3,7 @@ import torch.nn as nn
 import numpy as np
 
 
-def calculate_advantage(rewards, values, dones, gae_gamma=0.9, gae_lambda=0.95):
+def calculate_advantage(rewards, values, dones, gae_gamma=0.99, gae_lambda=0.95):
     advantage = np.zeros_like(rewards)
 
     # rewards.shape: (batch_size)

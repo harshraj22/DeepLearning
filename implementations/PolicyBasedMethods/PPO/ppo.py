@@ -15,6 +15,7 @@ import hydra
 import logging
 from tqdm import tqdm
 import wandb
+import random
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.NOTSET)
@@ -23,16 +24,20 @@ c_format = logging.Formatter('%(name)s : %(levelname)s - %(message)s')
 c_handler.setFormatter(c_format)
 logger.addHandler(c_handler)
 
-wandb.init(project="ppo-Enhanced-CartPole-v1", entity="harshraj22") #, mode="disabled")
+wandb.init(project="ppo-Enhanced-CartPole-v1", entity="harshraj22")#, mode="disabled")
 
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg):
+    random.seed(cfg.exp.seed)
+    np.random.seed(cfg.exp.seed)
+    torch.manual_seed(cfg.exp.seed)
+    torch.backends.cudnn.deterministic = cfg.exp.torch_deterministic
+
     # so that the environment automatically resets
     env = SyncVectorEnv([lambda: RecordEpisodeStatistics(gym.make('CartPole-v1'))])
-    # env = RecordEpisodeStatistics
     actor, critic = Actor(), Critic()
-    actor_optim = Adam(actor.parameters(), eps=1e-5)
-    critic_optim = Adam(critic.parameters(), eps=1e-5)
+    actor_optim = Adam(actor.parameters(), eps=1e-5, lr=cfg.params.actor_lr)
+    critic_optim = Adam(critic.parameters(), eps=1e-5, lr=cfg.params.critic_lr)
     memory = Memory(mini_batch_size=cfg.params.mini_batch_size, batch_size=cfg.params.batch_size)
     obs = env.reset()
     global_rewards = []
@@ -59,7 +64,7 @@ def main(cfg):
         if done[0]:
             tqdm.write(f'{info}')
             global_rewards.append(info[0]['episode']['r'])
-            wandb.log({'Avg_Reward': np.mean(global_rewards[-10:])})
+            wandb.log({'Avg_Reward': np.mean(global_rewards[-10:]), 'Reward': info[0]['episode']['r']})
         memory.remember(obs[0], action.item(), log_prob.item(), reward.item(), done.item(), value.item())
         cur_timestep += 1
 
@@ -71,12 +76,14 @@ def main(cfg):
             for epoch in tqdm(range(cfg.params.epochs), desc=f'Current timestep: {cur_timestep} / {cfg.params.total_timesteps}'):
                 # sample a batch from memory of experiences
                 old_states, old_actions, old_log_probs, old_rewards, old_dones, old_values, batch_indices = memory.sample()
+                # np.random.shuffle(batch_indices)
                 old_log_probs = torch.tensor(old_log_probs, dtype=torch.float32)
-                advantage = calculate_advantage(old_rewards, old_values, old_dones)
+                advantage = calculate_advantage(old_rewards, old_values, old_dones, gae_gamma=cfg.params.gae_gamma, gae_lambda=cfg.params.gae_lambda)
                 # normalize the advantage
-                advantage = (advantage - advantage.mean()) / (advantage.std() + 1e-6)
+                # advantage = (advantage - advantage.mean()) / (advantage.std() + 1e-6)
                 advantage = torch.tensor(advantage, dtype=torch.float32)
                 old_rewards = torch.tensor(old_rewards, dtype=torch.float32)
+                old_values = torch.tensor(old_values, dtype=torch.float32)
                 
                 # logger.info(f'old_states: {old_states.shape}, old_actions: {old_actions.shape}, old_log_probs: {old_log_probs.shape}, old_rewards: {old_rewards.shape}, old_dones: {old_dones.shape}, old_values: {old_values.shape}')
 
@@ -87,8 +94,15 @@ def main(cfg):
                     dist = actor(torch.tensor(old_states[mini_batch_index], dtype=torch.float32).unsqueeze(0))
                     actions = dist.sample()
                     log_probs = dist.log_prob(actions).squeeze(0)
+                    entropy = dist.entropy().squeeze(0)
 
-                    ratio = torch.exp(log_probs - old_log_probs[mini_batch_index])
+                    log_ratio = log_probs - old_log_probs[mini_batch_index]
+                    ratio = torch.exp(log_ratio)
+
+                    with torch.no_grad():
+                        approx_kl = ((ratio-1)-log_ratio).mean()
+                        wandb.log({'Approx_KL': approx_kl})
+
                     actor_loss = -torch.min(
                         ratio * advantage[mini_batch_index],
                         torch.clamp(ratio, 1 - cfg.params.actor_loss_clip, 1 + cfg.params.actor_loss_clip) * advantage[mini_batch_index]
@@ -96,12 +110,13 @@ def main(cfg):
 
                     critic_loss = F.mse_loss(
                         critic(torch.tensor(old_states[mini_batch_index], dtype=torch.float32).squeeze(0)).squeeze(-1),
-                        old_rewards[mini_batch_index] + advantage[mini_batch_index]
+                        old_values[mini_batch_index] + advantage[mini_batch_index]
                     )
 
                     # print(actor_loss, critic_loss)
                     # tqdm.write(f'{ratio}')
-                    loss = actor_loss + 0.5 * critic_loss
+                    wandb.log({'Actor_Loss': actor_loss.item(), 'Critic_Loss': critic_loss.item(), 'Entropy': entropy.mean().item()})
+                    loss = actor_loss + 0.5 * critic_loss - 0.08 * entropy.mean()
                     actor_optim.zero_grad()
                     critic_optim.zero_grad()
                     loss.backward()

@@ -1,0 +1,4 @@
+torch
+gym
+hydra-core==1.1.1
+wandb

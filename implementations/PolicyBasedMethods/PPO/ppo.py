@@ -1,3 +1,10 @@
+""" Trying to train PPO. References used for implementation:
+Phil's video: https://youtu.be/hlv79rcHws0
+video by wandb: https://youtu.be/MEt6rrxH8W4
+Hyperparameters in Deep Reinforcement Learning that Matters: https://arxiv.org/pdf/1709.06560.pdf
+Hyperparameters in IMPLEMENTATION MATTERS IN DEEP POLICY GRADIENTS: A CASE STUDY ON PPO AND TRPO: https://openreview.net/attachment?id=r1etN1rtPB&name=original_pdf
+"""
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

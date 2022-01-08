@@ -26,12 +26,12 @@ class Actor(nn.Module):
         super(Actor, self).__init__()
         """Assuming the Actor for CartPole-v1 """
         self.l1 = nn.Sequential(
-                layer_init(nn.Linear(4, 128)),
-                nn.ReLU(),
-                layer_init(nn.Linear(128, 128)),
-                nn.ReLU(),
+                layer_init(nn.Linear(4, 64)),
+                nn.Tanh(),
+                layer_init(nn.Linear(64, 64)),
+                nn.Tanh(),
             )
-        self.l2 = layer_init(nn.Linear(128, 2), std=1.0)
+        self.l2 = layer_init(nn.Linear(64, 2), std=0.01)
 
     def forward(self, state):
         action = self.l1(state)
@@ -44,12 +44,12 @@ class Critic(nn.Module):
         super(Critic, self).__init__()
         """Assuming the critic for CartPole-v1"""
         self.l1 = nn.Sequential(
-                layer_init(nn.Linear(4, 128)),
-                nn.ReLU(),
-                layer_init(nn.Linear(128, 128)),
-                nn.ReLU(),
+                layer_init(nn.Linear(4, 64)),
+                nn.Tanh(),
+                layer_init(nn.Linear(64, 64)),
+                nn.Tanh(),
             )
-        self.l2 = layer_init(nn.Linear(128, 1), std=1.0)
+        self.l2 = layer_init(nn.Linear(64, 1), std=1.0)
 
     def forward(self, state):
         value = self.l1(state)

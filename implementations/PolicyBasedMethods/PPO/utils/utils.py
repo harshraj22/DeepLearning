@@ -1,9 +1,10 @@
 import torch
 import torch.nn as nn
 import numpy as np
+import numpy.typing as npt
 
 
-def calculate_advantage(rewards, values, dones, gae_gamma=0.99, gae_lambda=0.95):
+def calculate_advantage(rewards: npt.ArrayLike, values: npt.ArrayLike, dones: npt.ArrayLike, gae_gamma=0.99, gae_lambda=0.95) -> npt.ArrayLike:
     advantage = np.zeros_like(rewards)
 
     # rewards.shape: (batch_size)

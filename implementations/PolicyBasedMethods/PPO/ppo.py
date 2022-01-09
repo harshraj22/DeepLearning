@@ -40,7 +40,7 @@ logger.addHandler(c_handler)
 logger.propagate = False
 
 
-wandb.init(project="ppo-Enhanced-CartPole-v1", entity="harshraj22", mode="disabled")
+wandb.init(project="ppo-Enhanced-CartPole-v1", entity="harshraj22") #, mode="disabled")
 
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg):
@@ -131,6 +131,7 @@ def main(cfg):
                     dist = actor(torch.tensor(old_states[mini_batch_index], dtype=torch.float32).unsqueeze(0))
                     # actions = dist.sample()
                     log_probs = dist.log_prob(old_actions[mini_batch_index]).squeeze(0)
+                    # logger.info(f'log_probs: {log_probs.shape}, advantage: {advantage.shape}')
                     entropy = dist.entropy().squeeze(0)
 
                     log_ratio = log_probs - old_log_probs[mini_batch_index]
@@ -165,8 +166,8 @@ def main(cfg):
                     actor_optim.zero_grad()
                     critic_optim.zero_grad()
                     loss.backward()
-                    # nn.utils.clip_grad_norm_(actor.parameters(), cfg.params.max_grad_norm)
-                    # nn.utils.clip_grad_norm_(critic.parameters(), cfg.params.max_grad_norm)
+                    nn.utils.clip_grad_norm_(actor.parameters(), cfg.params.max_grad_norm)
+                    nn.utils.clip_grad_norm_(critic.parameters(), cfg.params.max_grad_norm)
 
                     actor_optim.step()
                     critic_optim.step()
@@ -179,6 +180,10 @@ def main(cfg):
             actor_scheduler.step(cur_timestep)
             critic_scheduler.step(cur_timestep)
             # exit(0)
+            y_pred, y_true = old_values.cpu().numpy(), (old_values + advantage).cpu().numpy()
+            var_y = np.var(y_true)
+            explained_var = np.nan if var_y == 0 else 1 - np.var(y_true - y_pred) / var_y
+            wandb.log({'Explained_Var': explained_var})
 
     # observation = env.reset()
     # observation, reward, done, info = env.step([0])

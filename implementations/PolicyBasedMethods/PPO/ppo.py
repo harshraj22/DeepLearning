@@ -61,12 +61,12 @@ def main(cfg):
     memory = Memory(mini_batch_size=cfg.params.mini_batch_size, batch_size=cfg.params.batch_size)
     obs = env.reset()
     global_rewards = []
-    local_rewards = 0
 
     NUM_UPDATES = (cfg.params.total_timesteps // cfg.params.batch_size) * cfg.params.epochs
     cur_timestep = 0
 
     def calc_factor(cur_timestep: int) -> float:
+        """Calculates the factor to be multiplied with the learning rate to update it."""
         update_number = cur_timestep // cfg.params.batch_size
         total_updates = cfg.params.total_timesteps // cfg.params.batch_size
         fraction = 1.0 - update_number / total_updates
@@ -87,31 +87,21 @@ def main(cfg):
         value = value.cpu().numpy()
         log_prob = log_prob.cpu().numpy()
         obs_, reward, done, info = env.step(action)
-        local_rewards += reward.item()
-        # logger.info(f'obs: {obs}, action: {action}, log_prob: {log_prob} reward: {reward}, done: {done}, value: {value}')
-        # logger.info(f'obs: {type(obs)}, action: {type(action)}, log_prob: {type(log_prob)} reward: {type(reward)}, done: {type(done)}, value: {type(value)}')
-        # logger.info(f'obs: {obs.shape}, action: {action.shape}, log_prob: {log_prob.shape} reward: {reward.shape}, done: {done.shape}, value: {value.shape}')
-        # exit(0)
+        
         if done[0]:
             tqdm.write(f'Reward: {info[0]["episode"]["r"]}, Avg Reward: {np.mean(global_rewards[-10:]):.3f}')
             global_rewards.append(info[0]['episode']['r'])
             wandb.log({'Avg_Reward': np.mean(global_rewards[-10:]), 'Reward': info[0]['episode']['r']})
-            local_rewards = 0
 
         memory.remember(obs.squeeze(0).cpu().numpy(), action.item(), log_prob.item(), reward.item(), done.item(), value.item())
         obs = obs_
         cur_timestep += 1
-
-        # if len(memory.rewards) > 100:
-        #     tqdm.write(f'Average Score: {np.mean(memory.rewards[-100:])} | Memory Size: {len(memory.rewards)}')
 
         # if the current timestep is a multiple of the batch size, then we need to update the model
         if cur_timestep % cfg.params.batch_size == 0:
             for epoch in tqdm(range(cfg.params.epochs), desc=f'Num updates: {cfg.params.epochs * (cur_timestep // cfg.params.batch_size)} / {NUM_UPDATES}'):
                 # sample a batch from memory of experiences
                 old_states, old_actions, old_log_probs, old_rewards, old_dones, old_values, batch_indices = memory.sample()
-                # print(old_values)
-                # np.random.shuffle(batch_indices)
                 old_log_probs = torch.tensor(old_log_probs, dtype=torch.float32)
                 old_actions = torch.tensor(old_actions, dtype=torch.float32)
                 advantage = calculate_advantage(old_rewards, old_values, old_dones, gae_gamma=cfg.params.gae_gamma, gae_lambda=cfg.params.gae_lambda)
@@ -119,18 +109,15 @@ def main(cfg):
                 advantage = torch.tensor(advantage, dtype=torch.float32)
                 old_rewards = torch.tensor(old_rewards, dtype=torch.float32)
                 old_values = torch.tensor(old_values, dtype=torch.float32)
-                
-                # logger.info(f'old_states: {old_states.shape}, old_actions: {old_actions.shape}, old_log_probs: {old_log_probs.shape}, old_rewards: {old_rewards.shape}, old_dones: {old_dones.shape}, old_values: {old_values.shape}')
 
                 # for each mini batch from batch, calculate advantage using GAE
                 for mini_batch_index in batch_indices:
+                    # remember: Normalization of advantage is done on mini batch, not the entire batch
                     advantage[mini_batch_index] = (advantage[mini_batch_index] - advantage[mini_batch_index].mean()) / (advantage[mini_batch_index].std() + 1e-8)
 
-                    # update actor and critic
                     dist = actor(torch.tensor(old_states[mini_batch_index], dtype=torch.float32).unsqueeze(0))
                     # actions = dist.sample()
                     log_probs = dist.log_prob(old_actions[mini_batch_index]).squeeze(0)
-                    # logger.info(f'log_probs: {log_probs.shape}, advantage: {advantage.shape}')
                     entropy = dist.entropy().squeeze(0)
 
                     log_ratio = log_probs - old_log_probs[mini_batch_index]
@@ -158,8 +145,6 @@ def main(cfg):
                     ).mean()
                     # critic_loss = F.mse_loss(values, returns)
 
-                    # print(actor_loss, critic_loss)
-                    # tqdm.write(f'{ratio}')
                     wandb.log({'Actor_Loss': actor_loss.item(), 'Critic_Loss': critic_loss.item(), 'Entropy': entropy.mean().item()})
                     loss = actor_loss + 0.25 * critic_loss - 0.01 * entropy.mean()
                     actor_optim.zero_grad()
@@ -171,26 +156,18 @@ def main(cfg):
                     actor_optim.step()
                     critic_optim.step()
 
-                    # logger.info(f'Advantage: {advantage[mini_batch_index].shape}\n, ratio: {ratio.shape}\n, log_ratio: {log_ratio.shape}\n, log_probs: {log_probs.shape}\n, old_log_probs: {old_log_probs[mini_batch_index].shape}\n, old_values: {old_values[mini_batch_index].shape}\n, old_rewards: {old_rewards[mini_batch_index].shape}\n, old_dones: {old_dones[mini_batch_index].shape}\n, old_states: {old_states[mini_batch_index].shape}\n, actions: {actions.shape}\n, values: {values.shape}\n, entropy: {entropy.shape}')
-                    # # logger.info(f'Actor Grad: {actor.l1[0].weight.grad}')
-                    # # logger.info(f'Critic Grad: {critic.l1[0].weight.grad}')
-                    # exit(0)
             memory.reset()
             actor_scheduler.step(cur_timestep)
             critic_scheduler.step(cur_timestep)
-            # exit(0)
+
             y_pred, y_true = old_values.cpu().numpy(), (old_values + advantage).cpu().numpy()
             var_y = np.var(y_true)
             explained_var = np.nan if var_y == 0 else 1 - np.var(y_true - y_pred) / var_y
             wandb.log({'Explained_Var': explained_var})
 
-
-    torch.save(actor.state_dict(), Path(f'{hydra.utils.get_original_cwd()}/{cfg.exp.model_dir}/actor.pth'))
-    torch.save(critic.state_dict(), Path(f'{hydra.utils.get_original_cwd()}/{cfg.exp.model_dir}/critic.pth'))
-    # observation = env.reset()
-    # observation, reward, done, info = env.step([0])
-    # logger.info(f'observation: {observation.shape}, reward: {reward.shape}, done: {done.shape}, info: {info}')
-
+    if cfg.exp.save_weights:
+        torch.save(actor.state_dict(), Path(f'{hydra.utils.get_original_cwd()}/{cfg.exp.model_dir}/actor.pth'))
+        torch.save(critic.state_dict(), Path(f'{hydra.utils.get_original_cwd()}/{cfg.exp.model_dir}/critic.pth'))
 
 
 if __name__ == '__main__':

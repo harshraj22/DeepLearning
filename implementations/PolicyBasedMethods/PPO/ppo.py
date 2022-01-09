@@ -41,7 +41,7 @@ logger.addHandler(c_handler)
 logger.propagate = False
 
 
-wandb.init(project="ppo-Enhanced-CartPole-v1", entity="harshraj22") #, mode="disabled")
+wandb.init(project="ppo-Enhanced-CartPole-v1", entity="harshraj22", mode="disabled")
 
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg):
@@ -86,7 +86,7 @@ def main(cfg):
         action = action.cpu().numpy()
         value = value.cpu().numpy()
         log_prob = log_prob.cpu().numpy()
-        obs, reward, done, info = env.step(action)
+        obs_, reward, done, info = env.step(action)
         local_rewards += reward.item()
         # logger.info(f'obs: {obs}, action: {action}, log_prob: {log_prob} reward: {reward}, done: {done}, value: {value}')
         # logger.info(f'obs: {type(obs)}, action: {type(action)}, log_prob: {type(log_prob)} reward: {type(reward)}, done: {type(done)}, value: {type(value)}')
@@ -97,7 +97,9 @@ def main(cfg):
             global_rewards.append(info[0]['episode']['r'])
             wandb.log({'Avg_Reward': np.mean(global_rewards[-10:]), 'Reward': info[0]['episode']['r']})
             local_rewards = 0
-        memory.remember(obs[0], action.item(), log_prob.item(), reward.item(), done.item(), value.item())
+
+        memory.remember(obs.squeeze(0).cpu().numpy(), action.item(), log_prob.item(), reward.item(), done.item(), value.item())
+        obs = obs_
         cur_timestep += 1
 
         # if len(memory.rewards) > 100:

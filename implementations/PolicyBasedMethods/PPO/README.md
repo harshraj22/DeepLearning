@@ -4,5 +4,4 @@ See latest experiments on [wandb](https://wandb.ai/harshraj22/ppo-Enhanced-CartP
 
 Run using `python3 ppo.py` after installing the dependencies.
 
-![image](https://user-images.githubusercontent.com/46635452/148682119-be543937-ed3a-4197-b3e8-53e6ead6c209.png)
-
+![image](https://user-images.githubusercontent.com/46635452/148689012-2a40fa9c-63e6-4253-a630-6b7422684f99.png)

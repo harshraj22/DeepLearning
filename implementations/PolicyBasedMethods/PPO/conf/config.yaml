@@ -1,7 +1,7 @@
 params:
-  batch_size: 128
-  mini_batch_size: 16
-  total_timesteps: 50_000
+  batch_size: 256
+  mini_batch_size: 64
+  total_timesteps: 100_000
   epochs: 8
   actor_loss_clip: 0.2
   critic_loss_clip: 0.2
@@ -11,5 +11,6 @@ params:
   critic_lr: 0.0003
   max_grad_norm: 0.5
 exp:
-  seed: 7
+  model_dir: weights
+  seed: 23
   torch_deterministic: True

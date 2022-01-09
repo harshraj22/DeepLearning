@@ -28,6 +28,7 @@ from tqdm import tqdm
 import wandb
 import random
 import warnings
+from pathlib import Path
 
 warnings.filterwarnings("ignore")
 
@@ -52,12 +53,7 @@ def main(cfg):
     # so that the environment automatically resets
     env = SyncVectorEnv([
         lambda: RecordEpisodeStatistics(gym.make('CartPole-v1'))
-        # lambda: RecordEpisodeStatistics(VideoRecorder(gym.make('CartPole-v1'), base_path='./video'))
-        # lambda: VideoRecorder(RecordEpisodeStatistics(gym.make('CartPole-v1')), base_path='./video')
     ])
-    # env = gym.vector.SyncVectorEnv(
-    #     [make_env(1, cfg.exp.seed, 1)]
-    # )
 
     actor, critic = Actor(), Critic()
     actor_optim = Adam(actor.parameters(), eps=1e-5, lr=cfg.params.actor_lr)
@@ -70,7 +66,7 @@ def main(cfg):
     NUM_UPDATES = (cfg.params.total_timesteps // cfg.params.batch_size) * cfg.params.epochs
     cur_timestep = 0
 
-    def calc_factor(cur_timestep):
+    def calc_factor(cur_timestep: int) -> float:
         update_number = cur_timestep // cfg.params.batch_size
         total_updates = cfg.params.total_timesteps // cfg.params.batch_size
         fraction = 1.0 - update_number / total_updates
@@ -112,6 +108,7 @@ def main(cfg):
             for epoch in tqdm(range(cfg.params.epochs), desc=f'Num updates: {cfg.params.epochs * (cur_timestep // cfg.params.batch_size)} / {NUM_UPDATES}'):
                 # sample a batch from memory of experiences
                 old_states, old_actions, old_log_probs, old_rewards, old_dones, old_values, batch_indices = memory.sample()
+                # print(old_values)
                 # np.random.shuffle(batch_indices)
                 old_log_probs = torch.tensor(old_log_probs, dtype=torch.float32)
                 old_actions = torch.tensor(old_actions, dtype=torch.float32)
@@ -185,6 +182,9 @@ def main(cfg):
             explained_var = np.nan if var_y == 0 else 1 - np.var(y_true - y_pred) / var_y
             wandb.log({'Explained_Var': explained_var})
 
+
+    torch.save(actor.state_dict(), Path(f'{hydra.utils.get_original_cwd()}/{cfg.exp.model_dir}/actor.pth'))
+    torch.save(critic.state_dict(), Path(f'{hydra.utils.get_original_cwd()}/{cfg.exp.model_dir}/critic.pth'))
     # observation = env.reset()
     # observation, reward, done, info = env.step([0])
     # logger.info(f'observation: {observation.shape}, reward: {reward.shape}, done: {done.shape}, info: {info}')

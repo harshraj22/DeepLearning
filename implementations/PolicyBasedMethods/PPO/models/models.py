@@ -30,12 +30,14 @@ class Actor(nn.Module):
                 nn.Tanh(),
                 layer_init(nn.Linear(64, 64)),
                 nn.Tanh(),
+                layer_init(nn.Linear(64, 2), std=0.01),
+                nn.Softmax(dim=-1)
             )
-        self.l2 = layer_init(nn.Linear(64, 2), std=0.01)
+        # self.l2 = layer_init(nn.Linear(64, 2), std=0.01)
 
     def forward(self, state):
         action = self.l1(state)
-        action = F.softmax(self.l2(action), dim=-1)
+        # action = F.softmax(self.l2(action), dim=-1)
         return Categorical(action)
 
 
@@ -48,9 +50,11 @@ class Critic(nn.Module):
                 nn.Tanh(),
                 layer_init(nn.Linear(64, 64)),
                 nn.Tanh(),
+                layer_init(nn.Linear(64, 1), std=1.0)
             )
-        self.l2 = layer_init(nn.Linear(64, 1), std=1.0)
+        # self.l2 = layer_init(nn.Linear(64, 1), std=1.0)
 
     def forward(self, state):
         value = self.l1(state)
-        return self.l2(value)
+        return value
+        # return self.l2(value)

@@ -21,7 +21,7 @@ import gym
 from gym.vector import SyncVectorEnv
 from gym.wrappers import RecordEpisodeStatistics
 from gym.wrappers.monitoring.video_recorder import VideoRecorder
-from gym.wrappers import Monitor
+
 import hydra
 import logging
 from tqdm import tqdm

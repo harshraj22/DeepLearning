@@ -11,7 +11,7 @@ Run using `python3 ppo.py` after installing the dependencies.
 
 
 :v:😎 So, finally my implementation of PPO from scratch [solves](https://wandb.ai/harshraj22/ppo-Enhanced-CartPole-v1/runs/2yjamauv?workspace=user-harshraj22) CartPole-V1.
-Here's my learnings from trying to debug the same code for more than 1.5 months, and reading lots of discussions on Reddit, Stackoverflow and other channels on slack.
+Here's my learnings from trying to debug the same code for more than a month, and reading lots of discussions on Reddit, Stackoverflow and other channels on slack.
 - PPO on CartPole-V1 is a very simple task. It might be solved even without bells and whistles like GAE, LR scheduling etc. If your model is not able to constantly score even 150, there is definitely some bug in your implementation. Hyperparameters aren't bad, your implementation is.
 - [PPO Series](https://www.youtube.com/playlist?list=PLD80i8An1OEHhcxclwq8jOMam0m0M9dQ_) by [Costa](https://github.com/vwxyzjn) is actually an excellent resource to understand. 
 - Below are the bugs that I had made during my implementation:
@@ -21,7 +21,8 @@ for mini_batch_index in batch_indices:
     advantage[mini_batch_index] = (advantage[mini_batch_index] - advantage[mini_batch_index].mean()) / (advantage[mini_batch_index].std() + 1e-8)
 
     dist = actor(torch.tensor(old_states[mini_batch_index], dtype=torch.float32).unsqueeze(0))
-    # actions = dist.sample() <-- Remember, when calculating the log_prob to update the actor, the log_prob is to
+    # actions = dist.sample() 
+    # log_probs = dist.log_prob(actions).squeeze(0)<-- Remember, when calculating the log_prob to update the actor, the log_prob is to
     # be calculated with respect to old actions that were stored during playing game. You don't have to generate new
     # actions. This was my first Bug
     log_probs = dist.log_prob(old_actions[mini_batch_index]).squeeze(0)

@@ -9,6 +9,10 @@ Run using `python3 ppo.py` after installing the dependencies.
 
 
 
+https://user-images.githubusercontent.com/46635452/149395542-9803b2e7-d806-463c-b12c-7556309d7e1a.mp4
+
+
+
 
 :v:😎 So, finally my implementation of PPO from scratch [solves](https://wandb.ai/harshraj22/ppo-Enhanced-CartPole-v1/runs/2yjamauv?workspace=user-harshraj22) CartPole-V1.
 Here's my learnings from trying to debug the same code for more than a month, and reading lots of discussions on Reddit, Stackoverflow and other channels on slack.

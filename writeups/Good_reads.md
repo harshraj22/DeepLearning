@@ -3,6 +3,7 @@
 - [Medium](https://gordicaleksa.medium.com/how-i-got-a-job-at-deepmind-as-a-research-engineer-without-a-machine-learning-degree-1a45f2a781de) article about the story of [Aleksa Gordic](https://www.linkedin.com/in/aleksagordic?miniProfileUrn=urn%3Ali%3Afs_miniProfile%3AACoAACYdwKsB9_xmm5toYADSzYyGuIusSRinIsQ&lipi=urn%3Ali%3Apage%3Ad_flagship3_detail_base%3BJxNQXOXGTYCLEXUH4wJmJw%3D%3D)
 - [Medium](https://towardsdatascience.com/my-journey-to-kaggle-master-at-the-age-of-14-e2c42b19c6f7) article on Andy Wang's (Kaggle competition master) suggestion on competing on kaggle
 - [Kaggle](https://www.kaggle.com/tanulsingh077/tackling-any-kaggle-competition-the-noob-s-way) article by [Tanul singh](https://www.kaggle.com/tanulsingh077) (Kaggle competition master) on competing on kaggle.
+- [SWE in ML at Google](https://leetcode.com/discuss/interview-experience/939742/Google-or-PayPal-or-SWE-or-ML-or-Nov-2020-or-Offer) with 1.5 YOE
 
 
 <hr>

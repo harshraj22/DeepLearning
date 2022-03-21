@@ -2,6 +2,7 @@
 
 | Topic | Video (YouTube) | Video (Courses) | Blog |
 |-------|-----------------|-----------------|------|
+| Neural Nets | [decision boundary](https://www.youtube.com/playlist?list=PLyPKqVSnetmEOp_g_hfabuRAs9ET-shl_) | | |
 | PyTorch | [Python Engineer](https://www.youtube.com/watch?v=EMXfZB8FVUA&list=PLqnslRFeH2UrcDBWF5mfPGpqQDSta6VK4), [Aladdin Persson](https://www.youtube.com/watch?v=2S1dgHpqCdk&list=PLhhyoLH6IjfxeoooqP9rhU3HJIAVAJ3Vz) | [Udacity](https://www.udacity.com/course/deep-learning-nanodegree--nd101) with [github](https://github.com/udacity/deep-learning-v2-pytorch) repo for pytorch | [Harward](http://nlp.seas.harvard.edu/code/), [hsaghir](https://hsaghir.github.io/data_science/pytorch_starter/), [Kaggle](https://www.kaggle.com/kanncaa1/pytorch-tutorial-for-deep-learning-lovers), [Kaggle](https://www.kaggle.com/kanncaa1/deep-learning-tutorial-for-beginners) |
 | Back propagation | | | [backprop.org](https://www.backprop.org/) |
 | Loss functions | [cross entropy](https://www.youtube.com/watch?v=sbvv-uQmwVY) | | [Metric Learning: Lili](https://lilianweng.github.io/lil-log/2021/05/31/contrastive-representation-learning.html), [Metric Learning code](https://kevinmusgrave.github.io/pytorch-metric-learning/miners/)  [ML compiled](https://ml-compiled.readthedocs.io/en/latest/loss_functions.html) |

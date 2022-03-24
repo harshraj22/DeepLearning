@@ -15,6 +15,7 @@
 - [Covariate Shift](https://www.analyticsvidhya.com/blog/2017/07/covariate-shift-the-hidden-problem-of-real-world-data-science/) : changes in the data distribution :notebook:
 - [Handbook](https://machinelearningmastery.com/framework-for-imbalanced-classification-projects/) for imbalanced data problems
 - [Word to vec](https://youtu.be/f7o8aDNxf7k)
+- [Convex optimization, KKT, Lagrange Primal & Dual](https://www.youtube.com/watch?v=uh1Dk68cfWs)
 
 
 #### To Do:
